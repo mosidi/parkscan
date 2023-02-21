@@ -1,0 +1,77 @@
+o create Google authentication using React Hooks in React Native, follow these steps:
+
+    Create a new React Native project.
+
+    Install the react-native-google-signin library, which provides an easy way to integrate Google Sign-In into a React Native app. You can install it using the command npm install react-native-google-signin.
+
+    Integrate the library into your React Native project by following the setup instructions in the library's documentation.
+
+    Create a custom hook to manage the authentication state and logic. In this hook, you can use the useState and useEffect hooks to keep track of the user's authentication status and perform the necessary actions when the user signs in or out.
+
+    Use the GoogleSignin.signIn() method to initiate the Google Sign-In process. You can call this method in response to a user action, such as clicking a button.
+
+    Once the user has signed in, you can use the GoogleSignin.getCurrentUser() method to retrieve the user's profile information. You can then use this information to authenticate the user in your backend, if necessary.
+
+    Use the GoogleSignin.signOut() method to sign out the user. You can call this method in response to a user action, such as clicking a logout button.
+
+    Test the authentication process by running the app on a physical device or an emulator. Ensure that the user can sign in and out, and that the user's profile information is being retrieved correctly.
+
+Here's a basic example of a custom hook that implements the authentication logic using React Hooks:
+
+javascript
+
+import { useState, useEffect } from 'react';
+import GoogleSignin from 'react-native-google-signin';
+
+const useGoogleAuth = () => {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    GoogleSignin.configure({
+      webClientId: 'YOUR_WEB_CLIENT_ID',
+    });
+  }, []);
+
+  const signIn = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      setUser(userInfo.user);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const signOut = async () => {
+    try {
+      await GoogleSignin.revokeAccess();
+      await GoogleSignin.signOut();
+      setUser(null);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  return { user, signIn, signOut };
+};
+
+export default useGoogleAuth;
+
+This hook can then be used in your component to manage the authentication process.
+The webClientId is the client ID for your web application that you obtain from the Google API Console.
+
+    Go to the Google API Console (https://console.developers.google.com/).
+    Select a project or create a new one.
+    Navigate to the "Credentials" page.
+    Create a new OAuth client ID for a Web application.
+    Fill in the required information, including the authorized JavaScript origins and redirect URIs.
+    Download the JSON file that contains your client ID and copy the "client_id" value.
+    Replace 'YOUR_WEB_CLIENT_ID' in the code with the client ID value you just o
+
+    ===================================
+
+Apple 
+
+To complete set up, add this authorization callback URL to your app configuration in the Apple Developer Console. Additional steps may be needed to verify ownership of this web domain to Apple. Learn more
+
+    https://parking-54a9e.firebaseapp.com/__/auth/handler
